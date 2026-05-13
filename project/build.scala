@@ -61,7 +61,9 @@ object build {
     mimaSettings,
     organization := "org.json4s",
     scalaVersion := Scala212,
-    crossScalaVersions := Seq(Scala212, Scala213, Scala3),
+    // Rubrik fork: sdmain only consumes the Scala 2.12 artifacts. Restricting the matrix
+    // keeps the build fast and avoids Scala 3 compile quirks that aren't load-bearing for us.
+    crossScalaVersions := Seq(Scala212),
     addCommandAlias("SetScala212", s"++ ${Scala212}!"),
     addCommandAlias("SetScala213", s"++ ${Scala213}!"),
     addCommandAlias("SetScala3", s"++ ${Scala3}!"),

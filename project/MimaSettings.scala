@@ -14,17 +14,11 @@ object MimaSettings {
     MimaPlugin.globalSettings,
     MimaPlugin.buildSettings,
     MimaPlugin.projectSettings,
-    previousVersions := (0 to 5).map(patch => s"4.0.$patch"),
-    mimaPreviousArtifacts := {
-      val platform = (crossProjectPlatform.?.value: @unchecked) match {
-        case None | Some(JVMPlatform) => ""
-        case Some(JSPlatform) => "_sjs1"
-        case Some(NativePlatform) => "_native0.4"
-      }
-      previousVersions.value.map {
-        organization.value % s"${name.value}${platform}_${scalaBinaryVersion.value}" % _
-      }.toSet
-    },
+    // Rubrik fork: this build adds new methods to public traits (Formats), which would trip
+    // MiMa against upstream 4.0.x. We're publishing under a distinct version coordinate
+    // (4.0.8-rubrik) so binary compatibility with upstream 4.0.x is not a constraint.
+    previousVersions := Nil,
+    mimaPreviousArtifacts := Set(),
     (Test / test) := {
       mimaReportBinaryIssues.value
       (Test / test).value
